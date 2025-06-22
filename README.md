@@ -33,7 +33,7 @@ Abaixo está o diagrama da modelagem conceitual (MER - Modelo Entidade-Relaciona
 
 Na sequência, o diagrama do modelo lógico (MR - Modelo Relacional), com os detalhes de tabelas, campos, tipos de dados, chaves primárias e estrangeiras:
 
-![Modelo Lógico](imagens/Editora%20-%20MR.png)
+![Modelo Relacional](https://github.com/gabresantts/Projeto_Editora/raw/main/Editora%20-%20MR.png)
 
 # 3. Anexar a esse documento os Códigos abaixo de uma forma organizada e bem documentada:
 
