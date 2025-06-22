@@ -21,9 +21,23 @@ Cada pedido está vinculado a um cliente e pode conter múltiplos itens, represe
 
 Para efeito de visualização e comprovação, elaboramos o Diagrama MER pelo BRModelo Web e o Diagrama MR pelo MySQL Workbench com os Códigos e os Scripts solicitados de forma organizada também pelo MySQL. Vejamos a seguir:
 
+Projeto_Editora/
+├── imagens/
+│   ├── modelagem_conceitual.png
+│   └── modelo_logico.png
+├── README.md
+
 # 1. Anexar imagem do modelo lógico (Diagrama MER):
 
+Abaixo está o diagrama da modelagem conceitual:
+
+![Modelagem Conceitual](imagens/modelagem_conceitual.png)
+
 # 2. Anexar imagem do modelo físico (Diagrama MR):
+
+Abaixo está o diagrama do modelo lógico:
+
+![Modelo Lógico](imagens/modelo_logico.png)
 
 # 3. Anexar a esse documento os Códigos abaixo de uma forma organizada e bem documentada:
 
