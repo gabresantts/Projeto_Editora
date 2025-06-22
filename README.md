@@ -23,21 +23,23 @@ Para efeito de visualização e comprovação, elaboramos o Diagrama MER pelo BR
 
 Projeto_Editora/
 ├── imagens/
-│   ├── modelagem_conceitual.png
-│   └── modelo_logico.png
+│   ├── Editora - MER.png
+│   └── Editora - MR.png
 ├── README.md
 
 # 1. Anexar imagem do modelo lógico (Diagrama MER):
 
 Abaixo está o diagrama da modelagem conceitual:
 
-![Modelagem Conceitual](imagens/modelagem_conceitual.png)
+Abaixo está o diagrama da modelagem conceitual (MER - Modelo Entidade-Relacionamento), que representa as principais entidades do sistema da editora, seus atributos e os relacionamentos entre elas:
+
+![Modelagem Conceitual](imagens/Editora%20-%20MER.png)
 
 # 2. Anexar imagem do modelo físico (Diagrama MR):
 
-Abaixo está o diagrama do modelo lógico:
+Na sequência, o diagrama do modelo lógico (MR - Modelo Relacional), com os detalhes de tabelas, campos, tipos de dados, chaves primárias e estrangeiras:
 
-![Modelo Lógico](imagens/modelo_logico.png)
+![Modelo Lógico](imagens/Editora%20-%20MR.png)
 
 # 3. Anexar a esse documento os Códigos abaixo de uma forma organizada e bem documentada:
 
