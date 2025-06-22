@@ -3,7 +3,7 @@ Projeto acerca de uma editora de livros para a Disciplina: Banco de Dados - DQL 
 
 Projeto em Trio
 
-Discentes: 
+# Discentes: 
 
 Ana Carolina da Silva Santos;
 Gabriel Gleydson Lima dos Santos;
@@ -11,7 +11,7 @@ Muriel Bezerra da Silva.
 
 Recife, 27 de Junho de 2025.
 
-Minimundo - Editora
+# Minimundo - Editora
 
 O minimundo da editora modelado no MER e MR descreve o funcionamento de uma empresa do ramo editorial que gerencia de forma integrada o cadastro, publicação, comercialização e controle de exemplares de livros. A editora trabalha com diversos livros, cada um identificado por um ISBN único e contendo informações como título, autor, editora, data de publicação, edição, número de páginas, gênero e descrição. Os autores responsáveis pelas obras possuem dados registrados como nome, biografia, nacionalidade e datas de nascimento e falecimento. Cada livro pode ter vários exemplares, os quais são identificados por um número de série e armazenam informações sobre o estado físico (como disponível, danificado, reservado), localização física, data e custo de aquisição. 
 
@@ -21,11 +21,11 @@ Cada pedido está vinculado a um cliente e pode conter múltiplos itens, represe
 
 Para efeito de visualização e comprovação, elaboramos o Diagrama MER pelo BRModelo Web e o Diagrama MR pelo MySQL Workbench com os Códigos e os Scripts solicitados de forma organizada também pelo MySQL. Vejamos a seguir:
 
-1. Anexar imagem do modelo lógico (Diagrama MER):
+# 1. Anexar imagem do modelo lógico (Diagrama MER):
 
-2. Anexar imagem do modelo físico (Diagrama MR):
+# 2. Anexar imagem do modelo físico (Diagrama MR):
 
-3. Anexar a esse documento os Códigos abaixo de uma forma organizada e bem documentada:
+# 3. Anexar a esse documento os Códigos abaixo de uma forma organizada e bem documentada:
 
 -- Criação do banco de dados 
 DROP DATABASE IF EXISTS editora_livros;
@@ -185,9 +185,9 @@ CREATE TABLE HISTORICO_PRECO (
     FOREIGN KEY (id_funcionario) REFERENCES FUNCIONARIO(id_funcionario)
 );
 
-3.1 Anexar a esse documento os Scripts abaixo de uma forma organizada e bem documentada:
+# 3.1 Anexar a esse documento os Scripts abaixo de uma forma organizada e bem documentada:
 
-3.1.1 Script de Criação (DDL) de Tabelas e Views
+# 3.1.1 Script de Criação (DDL) de Tabelas e Views
 
 -- DROP e CRIAÇÃO DO BANCO
 DROP DATABASE IF EXISTS editora_livros;
@@ -342,7 +342,7 @@ CREATE TABLE HISTORICO_PRECO (
     FOREIGN KEY (id_funcionario) REFERENCES FUNCIONARIO(id_funcionario)
 );
 
-3.1.2 Scripts para Alterar Estruturas das Tabelas (ALTER TABLE)
+# 3.1.2 Scripts para Alterar Estruturas das Tabelas (ALTER TABLE)
 
 -- 1. Adicionar coluna de site à tabela EDITORA
 ALTER TABLE EDITORA
@@ -385,7 +385,7 @@ ALTER TABLE DEPARTAMENTO
 ADD COLUMN id_editora INT,
 ADD FOREIGN KEY (id_editora) REFERENCES EDITORA(id_editora);
 
-3.1.3 Script para Destruir Todos os Objetos do Banco de Dados
+# 3.1.3 Script para Destruir Todos os Objetos do Banco de Dados
 
 USE editora_livros;
 
@@ -430,7 +430,7 @@ DROP TABLE IF EXISTS
 -- 4. (Opcional) Dropar o banco inteiro
 -- DROP DATABASE IF EXISTS editora_livros;
 
-3.1.4 Script de Inserção de Dados (INSERT INTO)
+# 3.1.4 Script de Inserção de Dados (INSERT INTO)
 
 -- 1. Tabela: Editora
 
@@ -628,7 +628,7 @@ INSERT INTO HISTORICO_PRECO (isbn, preco_antigo, preco_novo, id_funcionario, mot
 ('9780000000009', 44.90, 49.90, 9, 'Custos logísticos'),
 ('9780000000010', 69.90, 79.90, 10, 'Alta procura após lançamento');
 
-3.1.5 Comandos UPDATE (10 exemplos):
+# 3.1.5 Comandos UPDATE (10 exemplos):
 
 -- Atualiza o telefone de um cliente
 UPDATE CLIENTE SET telefone = '11999999999' WHERE id_cliente = 1;
@@ -660,7 +660,7 @@ UPDATE LIVRO SET preco_sugerido = 65.00 WHERE isbn = '9780000000006';
 -- Marca funcionário como inativo
 UPDATE FUNCIONARIO SET ativo = FALSE WHERE id_funcionario = 10;
 
-3.1.6 Comandos DELETE (10 exemplos):
+# 3.1.6 Comandos DELETE (10 exemplos):
 
 -- Remove palavra-chave associada ao livro perdido
 DELETE FROM LIVRO_PALAVRA WHERE isbn = '9780000000007';
@@ -692,7 +692,7 @@ DELETE FROM AREA_CONHECIMENTO WHERE codigo = 'ADM';
 -- Remove palavra-chave que não está mais em uso
 DELETE FROM PALAVRA_CHAVE WHERE codigo = 'CRI';
 
-3.1.7 Relatórios e Consultas (DQL)
+# 3.1.7 Relatórios e Consultas (DQL)
 
 -- 1. Listar todos os livros com nome do autor e nome da editora
 
@@ -833,7 +833,7 @@ GROUP BY P.descricao
 ORDER BY ocorrencias DESC
 LIMIT 3;
 
-3.1.8 Criação de Views (mínimo 10):
+# 3.1.8 Criação de Views (mínimo 10):
 
 -- 1. View: Livros com Autor e Editora
 
@@ -952,8 +952,3 @@ SELECT
     AVG(valor_total) AS media_valor
 FROM PEDIDO
 GROUP BY forma_pagamento;
-
-
-
-
-
