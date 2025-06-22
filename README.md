@@ -33,7 +33,7 @@ Abaixo está o diagrama da modelagem conceitual:
 
 Abaixo está o diagrama da modelagem conceitual (MER - Modelo Entidade-Relacionamento), que representa as principais entidades do sistema da editora, seus atributos e os relacionamentos entre elas:
 
-![Modelagem Conceitual](imagens/Editora%20-%20MER.png)
+![Modelagem Conceitual]([imagens/Editora%20-%20MER.](https://github.com/gabresantts/Projeto_Editora/blob/main/Editora%20-%20MER.png))
 
 # 2. Anexar imagem do modelo físico (Diagrama MR):
 
