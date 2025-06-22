@@ -5,11 +5,11 @@ Projeto em Trio
 
 Discentes: 
 
-Ana Carolina da Silva Santos
-Gabriel Gleydson Lima dos Santos
-Muriel Bezerra da Silva 
+Ana Carolina da Silva Santos;
+Gabriel Gleydson Lima dos Santos;
+Muriel Bezerra da Silva.
 
-Recife, 16 de Maio de 2025.
+Recife, 27 de Junho de 2025.
 
 Minimundo - Editora
 
