@@ -25,21 +25,15 @@ Como parte da implementação completa do banco de dados da editora, foram criad
 
 Procedures
 
-Foram desenvolvidas 6 procedures com no mínimo 4 comandos SQL distintos cada, todas diferentes das abordadas em sala de aula. As procedures envolvem operações como inserção de novos pedidos, atualização de status de exemplares, geração de relatórios de vendas por área de conhecimento, controle de estoque por localização física, reatribuição de autores a livros e reajuste de salários por departamento.
-
-Além disso, foram elaborados scripts de teste específicos para cada uma das procedures, simulando cenários reais como novos pedidos feitos por clientes, movimentação de livros entre setores e reajustes em massa para determinados grupos de funcionários.
+Foram desenvolvidas 6 procedures com no mínimo 4 comandos SQL distintos cada, todas diferentes das abordadas em sala de aula. As procedures envolvem operações como inserção de novos pedidos, atualização de status de exemplares, geração de relatórios de vendas por área de conhecimento, controle de estoque por localização física, reatribuição de autores a livros e reajuste de salários por departamento. Além disso, foram elaborados scripts de teste específicos para cada uma das procedures, simulando cenários reais como novos pedidos feitos por clientes, movimentação de livros entre setores e reajustes em massa para determinados grupos de funcionários.
 
 Functions
 
-Também foram criadas 6 functions, coerentes com o funcionamento do minimundo da editora. As funções implementam lógicas como cálculo automático do valor total de um pedido com desconto, verificação de disponibilidade de exemplares, cálculo de idade de autores, classificação de livros por popularidade, total de livros por área de conhecimento e cálculo de tempo médio de entrega.
-
-Scripts de testes foram igualmente preparados para cada function, assegurando a consistência lógica e matemática dos retornos esperados conforme diferentes dados de entrada.
+Também foram criadas 6 functions, coerentes com o funcionamento do minimundo da editora. As funções implementam lógicas como cálculo automático do valor total de um pedido com desconto, verificação de disponibilidade de exemplares, cálculo de idade de autores, classificação de livros por popularidade, total de livros por área de conhecimento e cálculo de tempo médio de entrega. Scripts de testes foram igualmente preparados para cada function, assegurando a consistência lógica e matemática dos retornos esperados conforme diferentes dados de entrada.
 
 Triggers
 
-Por fim, o sistema contempla 6 triggers, também diferentes das estudadas em aula. As triggers foram configuradas para executar ações automáticas em situações como: alteração do estado de um exemplar após venda, auditoria de mudanças em salários, bloqueio de inserções com dados inválidos em pedidos, atualização de contagem de exemplares disponíveis por livro, registro automático de histórico de preços e prevenção de exclusão de autores vinculados a livros.
-
-Foram produzidos scripts de teste específicos para cada trigger, com comandos de inserção, atualização e exclusão que simulam comportamentos reais do sistema, verificando sua ativação correta e os efeitos produzidos nas tabelas associadas. Esses componentes avançados garantem maior robustez, automatização e inteligência ao sistema de banco de dados da editora, consolidando um modelo completo de controle e gestão editorial.
+Por fim, o sistema contempla 6 triggers, também diferentes das estudadas em aula. As triggers foram configuradas para executar ações automáticas em situações como: alteração do estado de um exemplar após venda, auditoria de mudanças em salários, bloqueio de inserções com dados inválidos em pedidos, atualização de contagem de exemplares disponíveis por livro, registro automático de histórico de preços e prevenção de exclusão de autores vinculados a livros. Foram produzidos scripts de teste específicos para cada trigger, com comandos de inserção, atualização e exclusão que simulam comportamentos reais do sistema, verificando sua ativação correta e os efeitos produzidos nas tabelas associadas. Esses componentes avançados garantem maior robustez, automatização e inteligência ao sistema de banco de dados da editora, consolidando um modelo completo de controle e gestão editorial.
 
 Para efeito de visualização e comprovação, elaboramos o Diagrama MER pelo BRModelo Web e o Diagrama MR pelo MySQL Workbench com os Códigos e os Scripts solicitados de forma organizada também pelo MySQL. Vejamos a seguir:
 
