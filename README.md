@@ -962,3 +962,297 @@ SELECT
     AVG(valor_total) AS media_valor
 FROM PEDIDO
 GROUP BY forma_pagamento;
+
+# 3.1.9 Procedure
+
+-- 1. Registrar novo livro e associar autor e editora
+DELIMITER //
+CREATE PROCEDURE registrar_livro (
+	IN p_isbn VARCHAR(100),
+  IN p_titulo VARCHAR(100),
+  IN p_idAutor INT,
+  IN p_idEditora INT,
+  IN p_preco DECIMAL(10,2),
+  IN p_estoque INT
+)
+BEGIN
+  INSERT INTO LIVRO (isbn, titulo, id_autor, id_editora, preco_sugerido, estoque_minimo)
+  VALUES (p_isbn, p_titulo, p_idAutor, p_idEditora, p_preco, p_estoque);
+END;
+//
+
+-- 2. Atualizar preço de todos os livros de uma editora
+CREATE PROCEDURE atualizar_preco_editora (
+    IN p_id_editora INT,
+    IN p_percentual DECIMAL(5,2)
+)
+BEGIN
+    UPDATE Livro SET  preco_sugerido =  preco_sugerido + ( preco_sugerido * p_percentual / 100) WHERE id_Editora = p_id_editora;
+    SELECT titulo,  preco_sugerido FROM Livro WHERE id_Editora = p_id_editora;
+END;
+//
+
+-- 3. Apagar livro
+CREATE PROCEDURE remover_livro (
+    IN p_isbn VARCHAR(13)
+)
+BEGIN
+    DECLARE v_id_autor INT;
+    DECLARE v_id_editora INT;
+
+    -- Recuperar os IDs antes de deletar
+    SELECT id_autor, id_editora INTO v_id_autor, v_id_editora
+    FROM Livro
+    WHERE isbn = p_isbn;
+
+    -- Apagar histórico de preço relacionado
+    DELETE FROM historico_preco WHERE isbn = p_isbn;
+
+    -- Agora remover o livro
+    DELETE FROM Livro WHERE isbn = p_isbn;
+END //
+
+DROP PROCEDURE IF EXISTS relatorio_livros_autor;
+
+-- 4. Gerar relatório de livros por autor
+CREATE PROCEDURE relatorio_livros_autor (
+    IN p_id_autor INT
+)
+BEGIN
+    SELECT A.nome, L.titulo, L.preco_sugerido
+    FROM Autor A
+    JOIN Livro L ON L.id_Autor = A.id_Autor
+    WHERE A.id_Autor = p_id_autor;
+
+    SELECT COUNT(*) AS total_livros FROM Livro WHERE id_Autor = p_id_autor;
+END;
+//
+
+-- 5. Historico_preco_livro
+CREATE PROCEDURE historico_preco_livro(IN p_isbn VARCHAR(13))
+BEGIN
+    SELECT * FROM HISTORICO_PRECO
+    WHERE isbn = p_isbn;
+END //
+
+-- 6. Consultar  títulos e data de publicação dos livros
+CREATE PROCEDURE livros_por_editora(IN idEditora INT)
+BEGIN
+    SELECT titulo, data_publicacao
+    FROM LIVRO
+    WHERE id_editora = id_Editora;
+END;
+//
+DELIMITER ;
+
+-- Registrar_livro
+CALL registrar_livro(978-85-7522-500-8, 'SQL para Iniciantes', 1, 1, 59.90, 10);
+
+-- Atualizar_preco_editora
+CALL atualizar_preco_editora(1, 10.00);
+
+-- Remover_livro
+CALL remover_livro(9780000000010);
+
+-- Relatorio_livros_autor
+CALL relatorio_livros_autor(1);
+
+-- Histórico_preco
+CALL historico_preco_livro('9780000000001');
+
+-- Data de publicação e título
+CALL livros_por_editora(1);
+
+-- Functions
+
+DELIMITER $$
+
+-- Função 1: calcula_preco_com_desconto
+CREATE FUNCTION calcula_preco_com_desconto(
+    preco DECIMAL(10,2),
+    desconto_percent INT
+) RETURNS DECIMAL(10,2)
+DETERMINISTIC
+BEGIN
+    RETURN preco * (1 - desconto_percent/100);
+END $$
+
+-- Função 2: estoque_disponivel
+CREATE FUNCTION estoque_disponivel(
+    p_isbn VARCHAR(13)
+) RETURNS INT
+DETERMINISTIC
+BEGIN
+    DECLARE qtd INT;
+    SELECT COUNT(*) INTO qtd 
+    FROM EXEMPLAR 
+    WHERE isbn = p_isbn AND estado = 'disponivel';
+    RETURN qtd;
+END $$
+
+-- Função 3: total_itens_pedido
+CREATE FUNCTION total_itens_pedido(
+    p_id_pedido INT
+) RETURNS INT
+DETERMINISTIC
+BEGIN
+    DECLARE total INT;
+    SELECT SUM(quantidade) INTO total 
+    FROM ITEM_PEDIDO 
+    WHERE id_pedido = p_id_pedido;
+    RETURN IFNULL(total,0);
+END $$
+
+-- Função 4: obter_preco_livro
+CREATE FUNCTION obter_preco_livro(
+    p_isbn VARCHAR(13)
+) RETURNS DECIMAL(10,2)
+DETERMINISTIC
+BEGIN
+    DECLARE preco DECIMAL(10,2);
+    SELECT preco_sugerido INTO preco FROM LIVRO WHERE isbn = p_isbn;
+    RETURN preco;
+END $$
+-- Função 5: cliente_ativo
+CREATE FUNCTION cliente_ativo(
+    p_id_cliente INT
+) RETURNS BOOLEAN
+DETERMINISTIC
+BEGIN
+    DECLARE ativo BOOLEAN;
+    SELECT EXISTS(
+        SELECT 1 FROM PEDIDO 
+        WHERE id_cliente = p_id_cliente 
+        AND status IN ('pendente', 'processando', 'enviado')
+    ) INTO ativo;
+    RETURN ativo;
+END $$
+
+-- Função 6: calcula_valor_pedido
+CREATE FUNCTION calcula_valor_pedido(
+    p_id_pedido INT
+) RETURNS DECIMAL(10,2)
+DETERMINISTIC
+BEGIN
+    DECLARE valor_total DECIMAL(10,2);
+    SELECT SUM(preco_unitario * quantidade * (1 - desconto / 100)) INTO valor_total
+    FROM ITEM_PEDIDO
+    WHERE id_pedido = p_id_pedido;
+    RETURN IFNULL(valor_total, 0);
+END $$
+
+DELIMITER ;
+
+-- Função 1: calcula_preco_com_desconto
+SELECT calcula_preco_com_desconto(100, 15) AS preco_com_desconto; -- Espera 85.00
+
+-- Função 2: estoque_disponivel
+SELECT estoque_disponivel('9780000000001') AS estoque_disp; -- Retorna qtd disponível
+
+-- Função 3: total_itens_pedido
+SELECT total_itens_pedido(1) AS total_itens; -- Soma itens do pedido 1
+
+-- Função 4: obter_preco_livro
+SELECT obter_preco_livro('9780000000002') AS preco_livro; -- Retorna preço do livro
+
+-- Função 5: cliente_ativo
+SELECT cliente_ativo(1) AS cliente_ativo; -- TRUE/FALSE
+
+-- Função 6: calcula_valor_pedido
+SELECT calcula_valor_pedido(1) AS valor_pedido; -- Soma real do pedido 1
+
+# 3.1.10 Triggers
+
+DELIMITER $$
+
+-- Trigger 1: Atualiza coluna data_entrega
+CREATE TRIGGER trg_pedido_entregue
+BEFORE UPDATE ON PEDIDO
+FOR EACH ROW
+BEGIN
+    IF NEW.status = 'entregue' AND OLD.status <> 'entregue' THEN
+        SET NEW.data_entrega = NOW();
+    END IF;
+END $$
+
+-- Trigger 2: Impede inserção de ITEM_PEDIDO
+CREATE TRIGGER trg_valida_quantidade_item
+BEFORE INSERT ON ITEM_PEDIDO
+FOR EACH ROW
+BEGIN
+    IF NEW.quantidade <= 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Quantidade do item deve ser maior que zero';
+    END IF;
+END $$
+
+-- Trigger 3: Atualiza valor total do pedido
+CREATE TRIGGER trg_atualiza_valor_pedido
+AFTER INSERT ON ITEM_PEDIDO
+FOR EACH ROW
+BEGIN
+    UPDATE PEDIDO
+    SET valor_total = (SELECT calcula_valor_pedido(NEW.id_pedido))
+    WHERE id_pedido = NEW.id_pedido;
+END $$
+
+-- Trigger 4: Atualiza estoque do exemplar para 'vendido' após inserção de item pedido
+CREATE TRIGGER trg_estoque_exemplar_vendido
+AFTER INSERT ON ITEM_PEDIDO
+FOR EACH ROW
+BEGIN
+    UPDATE EXEMPLAR
+    SET estado = 'vendido'
+    WHERE numero_serie = NEW.numero_serie;
+END $$
+
+-- Trigger 5: Impede deletar livro que tenha exemplares vinculados
+CREATE TRIGGER trg_impede_deletar_livro
+BEFORE DELETE ON LIVRO
+FOR EACH ROW
+BEGIN
+    IF (SELECT COUNT(*) FROM EXEMPLAR WHERE isbn = OLD.isbn) > 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Não é permitido deletar livro com exemplares vinculados';
+    END IF;
+END $$
+
+-- Trigger 6: Atualiza data de alteração do preço ao mudar preço sugerido
+CREATE TRIGGER trg_preencher_desconto_padrao
+BEFORE INSERT ON ITEM_PEDIDO
+FOR EACH ROW
+BEGIN
+    IF NEW.desconto IS NULL THEN
+        SET NEW.desconto = 0;
+    END IF;
+END $$
+
+DELIMITER ;
+
+-- Trigger 1: Atualiza coluna data_entrega
+UPDATE PEDIDO SET status = 'entregue' WHERE id_pedido = 3;
+SELECT data_entrega FROM PEDIDO WHERE id_pedido = 3;
+
+-- Trigger 2: Impede inserção de ITEM_PEDIDO
+INSERT INTO ITEM_PEDIDO (id_pedido, numero_serie, preco_unitario, quantidade, desconto)
+VALUES (1, 1, 59.90, 2, 1);
+
+-- Trigger 3: Atualiza valor total do pedido
+INSERT INTO ITEM_PEDIDO (id_pedido, numero_serie, preco_unitario, quantidade, desconto)
+VALUES (1, 2, 30.00, 1, 0);
+SELECT valor_total FROM PEDIDO WHERE id_pedido = 1;
+
+-- Trigger 4: Atualiza estoque do exemplar para 'vendido' após inserção de item pedido
+INSERT INTO ITEM_PEDIDO (id_pedido, numero_serie, preco_unitario, quantidade, desconto)
+VALUES (2, 3, 89.50, 1, 0);
+SELECT estado FROM EXEMPLAR WHERE numero_serie = 3;
+
+-- Trigger 5: Impede deletar livro que tenha exemplares vinculados
+DELETE FROM LIVRO WHERE isbn = '9780000000001'; -- falhar se tiver exemplar
+
+-- Trigger 6: Preencher automaticamente o campo desconto com 0 caso seja omitido
+INSERT INTO PEDIDO (id_cliente, id_funcionario, data_entrega, status, forma_pagamento, valor_total)
+VALUES (1, 1, '2025-07-01', 'processando', 'credito', 0.00);
+
+DESCRIBE LIVRO;
+SET SQL_SAFE_UPDATES = 0;
+
+SHOW PROCEDURE STATUS WHERE Db = 'editora_livros';
